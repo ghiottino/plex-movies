@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Film</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .movie {
+            width: 200px;
+            background: #333;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        h2 {
+            font-size: 16px;
+            margin: 10px 0 5px;
+        }
+        p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista Film</h1>
+    <div class="container" id="moviesContainer"></div>
+
+    <script>
+        fetch("movies.json")
+        .then(response => response.json())
+        .then(movies => {
+            let container = document.getElementById("moviesContainer");
+            movies.forEach(movie => {
+                let movieDiv = document.createElement("div");
+                movieDiv.classList.add("movie");
+                
+                let img = document.createElement("img");
+                img.src = `http://192.168.1.195:8181/photo/:/transcode?url=${movie.poster}&width=200`;
+                img.alt = movie.title;
+                
+                let title = document.createElement("h2");
+                title.textContent = movie.title;
+                
+                let year = document.createElement("p");
+                year.textContent = `Anno: ${movie.year}`;
+                
+                movieDiv.appendChild(img);
+                movieDiv.appendChild(title);
+                movieDiv.appendChild(year);
+                container.appendChild(movieDiv);
+            });
+        })
+        .catch(error => console.error("Errore nel caricamento dei film:", error));
+    </script>
+</body>
+</html>
